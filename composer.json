@@ -1,0 +1,29 @@
+{
+    "name": "tartan/laravel-xlog",
+    "version": "0.0.3",
+    "description": "extended Laravel 5.x log",
+    "keywords": ["laravel", "log", "xlog", "extended logger"],
+    "type": "laravel-component",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aboozar Ghaffari <Tartan>",
+            "email": "aboozar.ghf@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Tartan\\Log\\": "src"
+        },
+        "files": [
+            "src/helper.php"
+        ]
+    },
+    "require": {
+        "php": ">=5.4",
+        "illuminate/support": "5.x.x"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    }
+}
