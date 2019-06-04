@@ -1,6 +1,6 @@
 {
     "name": "tartan/laravel-xlog",
-    "version": "0.0.3",
+    "version": "1.0.1",
     "description": "extended Laravel 5.x log",
     "keywords": ["laravel", "log", "xlog", "extended logger"],
     "type": "laravel-component",
@@ -14,10 +14,7 @@
     "autoload": {
         "psr-4": {
             "Tartan\\Log\\": "src"
-        },
-        "files": [
-            "src/helper.php"
-        ]
+        }
     },
     "require": {
         "php": ">=5.4",
