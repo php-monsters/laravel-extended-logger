@@ -38,22 +38,46 @@ class XLog
 
         // get request track ID from service container
         if (!isset($arguments[1][$trackIdKey])) {
-            $arguments[1][$trackIdKey] = resolve($trackIdKey);
+            $arguments[1][$trackIdKey] = self::getTrackId($trackIdKey);
         }
 
         return call_user_func_array(['Illuminate\Support\Facades\Log', $name], $arguments);
     }
 
+    /**
+     * @param Exception $e
+     * @param string $level
+     *
+     * @return mixed
+     */
     public static function exception(Exception $e, $level = 'error')
     {
+        $trackIdKey = env('XLOG_TRACK_ID_KEY', 'xTrackId');
+
         $arguments     = [];
         $arguments [0] = 'exception' . $e->getMessage();
         $arguments [1] = [
             'code' => $e->getCode(),
             'file' => basename($e->getFile()),
             'line' => $e->getLine(),
+            $trackIdKey => self::getTrackId($trackIdKey)
         ];
 
         return call_user_func_array(['XLog', $level], $arguments);
+    }
+
+    /**
+     * @param $trackIdKey
+     *
+     * @return string
+     */
+    protected static function getTrackId($trackIdKey)
+    {
+        try {
+            $trackId = resolve($trackIdKey);
+        } catch (Exception $e) {
+            $trackId = '-';
+        }
+        return $trackId;
     }
 }

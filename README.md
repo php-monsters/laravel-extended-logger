@@ -28,6 +28,7 @@ XLOG_TRACK_ID_KEY= (default xTrackId)
 ```php
 use Tartan\Log\XLog; // or register XLog Facade
 
+XLog::debug('test message');
 XLog::info('test message');
 XLog::notice('test message');
 XLog::warning('test message');
@@ -55,4 +56,5 @@ XLog::info('test message', $array);
 
 ```php
 XLog::exception($e, 'error');
+XLog::exception($e, 'emergency');
 ```
