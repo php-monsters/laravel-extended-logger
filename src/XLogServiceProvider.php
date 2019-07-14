@@ -20,7 +20,7 @@ class XLogServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(env('XLOG_TRACK_ID_KEY', 'xTrackId'), function ($app) {
-            return substr(0, 10, sha1(uniqid('xTrackId')));
+            return substr(sha1(uniqid('xTrackId'), 0, 10));
         });
 
         $this->app->singleton('XLog', function ($app) {
