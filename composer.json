@@ -1,6 +1,5 @@
 {
     "name": "tartan/laravel-xlog",
-    "version": "1.0.2",
     "description": "extended Laravel 5.x log",
     "keywords": ["laravel", "log", "xlog", "extended logger"],
     "type": "laravel-component",
