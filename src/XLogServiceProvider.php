@@ -28,4 +28,3 @@ class XLogServiceProvider extends ServiceProvider
         });
     }
 }
-xx
