@@ -1,7 +1,7 @@
 {
     "name": "tartan/laravel-xlog",
-    "description": "extended Laravel 5.x log",
-    "keywords": ["laravel", "log", "xlog", "extended logger"],
+    "description": "extended Laravel 5+ log",
+    "keywords": ["laravel", "log", "xlog", "extended logger", "laravel log"],
     "type": "laravel-component",
     "license": "MIT",
     "authors": [

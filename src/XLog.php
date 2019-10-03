@@ -5,7 +5,7 @@ namespace Tartan\Log;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 
-class XLog
+class Logger
 {
     private static $LOG_LEVELS = ['debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'];
 
@@ -63,7 +63,7 @@ class XLog
             $trackIdKey => self::getTrackId($trackIdKey)
         ];
 
-        return call_user_func_array(['XLog', $level], $arguments);
+        return call_user_func_array(['Tartan\Log\Logger', $level], $arguments);
     }
 
     /**

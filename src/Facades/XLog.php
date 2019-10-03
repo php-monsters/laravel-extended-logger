@@ -18,6 +18,6 @@ class XLog extends Facade
      */
     protected static function getFacadeAccessor ()
     {
-        return 'Tartan\Log\XLog';
+        return 'Tartan\Log\Logger';
     }
 }
