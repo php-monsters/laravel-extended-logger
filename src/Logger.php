@@ -24,7 +24,7 @@ class Logger
             $name = 'debug';
         }
 
-        return call_user_func_array(['Illuminate\Support\Facades\Log', $name], $arguments);
+        return self::__callStatic($name, $arguments);
     }
 
     /**
@@ -35,6 +35,10 @@ class Logger
      */
     public static function __callStatic($name, $arguments)
     {
+        if (!in_array($name, self::$LOG_LEVELS)) {
+            $name = 'debug';
+        }
+
         if (session_status() == PHP_SESSION_NONE) {
             $arguments[1]['sid'] = session_id();
         } else {
@@ -52,6 +56,7 @@ class Logger
         $trackIdKey = env('XLOG_TRACK_ID_KEY', 'xTrackId');
 
         // get request track ID from service container
+
         if (!isset($arguments[1][$trackIdKey])) {
             $arguments[1][$trackIdKey] = self::getTrackId($trackIdKey);
         }
@@ -65,20 +70,20 @@ class Logger
      *
      * @return mixed
      */
-    public static function exception(Exception $e, $level = 'error')
+    public static function exception(Exception $e, $name = 'error')
     {
         $trackIdKey = env('XLOG_TRACK_ID_KEY', 'xTrackId');
 
         $arguments     = [];
         $arguments [0] = 'exception' . $e->getMessage();
         $arguments [1] = [
-            'code' => $e->getCode(),
-            'file' => basename($e->getFile()),
-            'line' => $e->getLine(),
-            $trackIdKey => self::getTrackId($trackIdKey)
+            'code'      => $e->getCode(),
+            'file'      => basename($e->getFile()),
+            'line'      => $e->getLine(),
+            $trackIdKey => self::getTrackId($trackIdKey),
         ];
 
-        return call_user_func_array(['Tartan\Log\Logger', $level], $arguments);
+        return self::__callStatic($name, $arguments);
     }
 
     /**
@@ -93,6 +98,8 @@ class Logger
         } catch (Exception $e) {
             $trackId = '-';
         }
+
         return $trackId;
     }
+
 }
