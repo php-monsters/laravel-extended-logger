@@ -19,12 +19,8 @@ class XLogServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(env('XLOG_TRACK_ID_KEY', 'xTrackId'), function ($app) {
+        $this->app->singleton(env('XLOG_TRACK_ID_KEY', 'xTrackId'), function () {
             return substr(sha1(uniqid('xTrackId')), 0, 10);
-        });
-
-        $this->app->singleton('XLog', function ($app) {
-            return new \Tartan\Log\XLog($app);
         });
     }
 }

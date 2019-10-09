@@ -7,8 +7,17 @@ use Exception;
 
 class Logger
 {
+    /**
+     * @var array
+     */
     private static $LOG_LEVELS = ['debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'];
 
+    /**
+     * @param $name
+     * @param $arguments
+     *
+     * @return mixed
+     */
     public function __call($name, $arguments)
     {
         if (!in_array($name, self::$LOG_LEVELS)) {
@@ -18,6 +27,12 @@ class Logger
         return call_user_func_array(['Illuminate\Support\Facades\Log', $name], $arguments);
     }
 
+    /**
+     * @param $name
+     * @param $arguments
+     *
+     * @return mixed
+     */
     public static function __callStatic($name, $arguments)
     {
         if (session_status() == PHP_SESSION_NONE) {
