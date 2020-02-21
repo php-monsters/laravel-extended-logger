@@ -75,7 +75,7 @@ class Logger
         $trackIdKey = env('XLOG_TRACK_ID_KEY', 'xTrackId');
 
         $arguments     = [];
-        $arguments [0] = 'exception' . $e->getMessage();
+        $arguments [0] = 'exception-> ' . $e->getMessage();
         $arguments [1] = [
             'code'      => $e->getCode(),
             'file'      => basename($e->getFile()),
