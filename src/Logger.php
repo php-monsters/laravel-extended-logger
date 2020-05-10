@@ -39,6 +39,14 @@ class Logger
             $name = 'debug';
         }
 
+        if (!is_array($arguments)) {
+            $arguments= [$arguments];
+        }
+
+        if (isset($arguments[1])) {
+            $arguments[1] = [];
+        }
+
         if (session_status() == PHP_SESSION_NONE) {
             $arguments[1]['sid'] = session_id();
         } else {
