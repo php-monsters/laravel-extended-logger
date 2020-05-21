@@ -40,7 +40,7 @@ class Logger
         }
 
         if (!is_array($arguments)) {
-            $arguments= [$arguments];
+            $arguments = [$arguments];
         }
 
         if (isset($arguments[1])) {
@@ -80,18 +80,24 @@ class Logger
      */
     public static function exception(Exception $e, $name = 'error')
     {
-        $trackIdKey = env('XLOG_TRACK_ID_KEY', 'xTrackId');
-
         $arguments     = [];
         $arguments [0] = 'exception-> ' . $e->getMessage();
         $arguments [1] = [
-            'code'      => $e->getCode(),
-            'file'      => basename($e->getFile()),
-            'line'      => $e->getLine(),
-            $trackIdKey => self::getTrackId($trackIdKey),
+            'code'                => $e->getCode(),
+            'file'                => basename($e->getFile()),
+            'line'                => $e->getLine(),
+            self::getTrackIdKey() => self::getTrackId(),
         ];
 
         return self::__callStatic($name, $arguments);
+    }
+
+    /**
+     * @return string
+     */
+    public static function getTrackIdKey()
+    {
+        return env('XLOG_TRACK_ID_KEY', 'xTrackId');
     }
 
     /**
@@ -99,8 +105,10 @@ class Logger
      *
      * @return string
      */
-    protected static function getTrackId($trackIdKey)
+    protected static function getTrackId()
     {
+        $trackIdKey = self::getTrackIdKey();
+
         try {
             $trackId = resolve($trackIdKey);
         } catch (Exception $e) {
