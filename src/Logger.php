@@ -43,8 +43,13 @@ class Logger
             $arguments = [$arguments];
         }
 
-        if (isset($arguments[1])) {
+        // fix the wrong usage of xlog when second parameter is not an array
+        if (!isset($arguments[1])) {
             $arguments[1] = [];
+        }
+
+        if(!is_array($arguments[1])){
+            $arguments[1] = [$arguments[1]];
         }
 
         if (session_status() == PHP_SESSION_NONE) {
