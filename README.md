@@ -5,12 +5,12 @@ XLog adds `User ID`, `User IP`, `Track ID` to each log
 ## Installation
 
 ```bash
-composer require tartan/laravel-xlog
+composer require php-monsters/laravel-xlog
 ```
 
 Add this to your app service providers :
 ```php
-    Tartan\Log\XLogServiceProvider::class,
+    PhpMonsters\Log\XLogServiceProvider::class,
 ```
 
 ## Config (optional)
@@ -26,7 +26,7 @@ XLOG_TRACK_ID_KEY= (default xTrackId)
 ## Usage
 
 ```php
-use Tartan\Log\XLog; // or register XLog Facade
+use PhpMonsters\Log\XLog; // or register XLog Facade
 
 XLog::debug('test message');
 XLog::info('test message');

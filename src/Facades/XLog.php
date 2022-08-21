@@ -1,12 +1,12 @@
 <?php
 
-namespace Tartan\Log\Facades;
+namespace PhpMonsters\Log\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
  * Class XLog
- * @package Tartan\XLog
+ * @package PhpMonsters\XLog
  * @author  Aboozar Ghaffari <aboozar.ghf@gmail.com>
  */
 class XLog extends Facade
@@ -18,6 +18,6 @@ class XLog extends Facade
      */
     protected static function getFacadeAccessor ()
     {
-        return 'Tartan\Log\Logger';
+        return 'PhpMonsters\Log\Logger';
     }
 }

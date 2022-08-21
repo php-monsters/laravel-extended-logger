@@ -1,6 +1,6 @@
 <?php
 
-namespace Tartan\Log;
+namespace PhpMonsters\Log;
 
 use Illuminate\Support\ServiceProvider;
 

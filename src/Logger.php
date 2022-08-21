@@ -1,9 +1,9 @@
 <?php
 
-namespace Tartan\Log;
+namespace PhpMonsters\Log;
 
-use Illuminate\Support\Facades\Auth;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class Logger
 {
@@ -13,18 +13,61 @@ class Logger
     private static $LOG_LEVELS = ['debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'];
 
     /**
-     * @param $name
-     * @param $arguments
-     *
+     * @var string
+     */
+    private static $userUserId = null;
+
+    /**
+     * @var bool
+     */
+    private static $firstCall = false;
+
+    /**
+     * @param Exception $e
+     * @param bool $trace log trace string or not
+     * @param string $name
      * @return mixed
      */
-    public function __call($name, $arguments)
+    public static function exception(Exception $e, bool $trace = false, string $name = 'error')
     {
-        if (!in_array($name, self::$LOG_LEVELS)) {
-            $name = 'debug';
+        $arguments = [];
+        $arguments [0] = 'exception-> ' . $e->getMessage();
+        $arguments [1] = [
+            'code' => $e->getCode(),
+            'file' => basename($e->getFile()),
+            'line' => $e->getLine(),
+            self::getTrackIdKey() => self::getTrackId(),
+        ];
+
+        if ($trace) {
+            $arguments[1]['trace'] = $e->getTraceAsString();
         }
 
         return self::__callStatic($name, $arguments);
+    }
+
+    /**
+     * @return string
+     */
+    public static function getTrackIdKey(): string
+    {
+        return env('XLOG_TRACK_ID_KEY', 'xTrackId');
+    }
+
+    /**
+     * @return string
+     */
+    protected static function getTrackId(): string
+    {
+        $trackIdKey = self::getTrackIdKey();
+
+        try {
+            $trackId = resolve($trackIdKey);
+        } catch (Exception $e) {
+            $trackId = '-';
+        }
+
+        return $trackId;
     }
 
     /**
@@ -48,28 +91,19 @@ class Logger
             $arguments[1] = [];
         }
 
-        if(!is_array($arguments[1])){
+        if (!is_array($arguments[1])) {
             $arguments[1] = [$arguments[1]];
         }
 
-        if (session_status() == PHP_SESSION_NONE) {
-            $arguments[1]['sid'] = session_id();
-        } else {
-            $arguments[1]['sid'] = '';
-        }
+        $arguments[1]['sid'] = self::getSessionId();
 
         $arguments[1]['uip'] = @clientIp();
 
         // add user id to all logs
-        if (env('XLOG_ADD_USERID', true)) {
-            if (!Auth::guest()) {
-                $arguments[1]['uid'] = 'us' . Auth::user()->id . 'er'; // user id as a tag
-            }
-        }
-        $trackIdKey = env('XLOG_TRACK_ID_KEY', 'xTrackId');
+        $arguments[1]['uid'] = self::getUserTag(); // user id as a tag
 
         // get request track ID from service container
-
+        $trackIdKey = self::getTrackIdKey();
         if (!isset($arguments[1][$trackIdKey])) {
             $arguments[1][$trackIdKey] = self::getTrackId($trackIdKey);
         }
@@ -78,49 +112,47 @@ class Logger
     }
 
     /**
-     * @param Exception $e
-     * @param string $level
+     * @return string
+     */
+    private static function getSessionId(): string
+    {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            return session_id();
+        }
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+    private static function getUserTag(): string
+    {
+        // add user id to all logs
+        if ((bool)env('XLOG_ADD_USERID', true) === false || Auth::guest() === true) {
+            return 'user';
+        }
+
+        if (self::$firstCall === true) {
+            return 'us' . self::$userUserId . 'er';
+        }
+
+        self::$firstCall = true;
+        self::$userUserId = Auth::user()->id;
+        return 'us' . self::$userUserId . 'er';
+    }
+
+    /**
+     * @param $name
+     * @param $arguments
      *
      * @return mixed
      */
-    public static function exception(Exception $e, $name = 'error')
+    public function __call($name, $arguments)
     {
-        $arguments     = [];
-        $arguments [0] = 'exception-> ' . $e->getMessage();
-        $arguments [1] = [
-            'code'                => $e->getCode(),
-            'file'                => basename($e->getFile()),
-            'line'                => $e->getLine(),
-            self::getTrackIdKey() => self::getTrackId(),
-        ];
+        if (!in_array($name, self::$LOG_LEVELS)) {
+            $name = 'debug';
+        }
 
         return self::__callStatic($name, $arguments);
     }
-
-    /**
-     * @return string
-     */
-    public static function getTrackIdKey()
-    {
-        return env('XLOG_TRACK_ID_KEY', 'xTrackId');
-    }
-
-    /**
-     * @param $trackIdKey
-     *
-     * @return string
-     */
-    protected static function getTrackId()
-    {
-        $trackIdKey = self::getTrackIdKey();
-
-        try {
-            $trackId = resolve($trackIdKey);
-        } catch (Exception $e) {
-            $trackId = '-';
-        }
-
-        return $trackId;
-    }
-
 }

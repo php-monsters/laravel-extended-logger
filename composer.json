@@ -1,28 +1,38 @@
 {
-    "name": "tartan/laravel-xlog",
+    "name": "php-monsters/laravel-xlog",
     "description": "extended Laravel 5+ log",
     "keywords": ["laravel", "log", "xlog", "extended logger", "laravel log"],
     "type": "laravel-component",
     "license": "MIT",
     "authors": [
         {
-            "name": "Aboozar Ghaffari <Tartan>",
+            "name": "Aboozar Ghaffari <@samuraee>",
             "email": "aboozar.ghf@gmail.com"
         }
     ],
     "autoload": {
         "psr-4": {
-            "Tartan\\Log\\": "src"
+            "PhpMonsters\\Log\\": "src"
         },
         "files": [
             "src/helper.php"
         ]
     },
     "require": {
-        "php": ">=5.4",
+        "php": ">=7.0",
         "illuminate/support": ">=5.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "PhpMonsters\\Log\\XLogServiceProvider"
+            ],
+            "aliases": {
+                "XLog": "PhpMonsters\\Log\\Facade"
+            }
+        }
     }
 }
