@@ -6,6 +6,14 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * Class XLog
+ * @method debug(string $message, array $context = [])
+ * @method info(string $message, array $context = [])
+ * @method notice(string $message, array $context = [])
+ * @method warning(string $message, array $context = [])
+ * @method error(string $message, array $context = [])
+ * @method critical(string $message, array $context = [])
+ * @method alert(string $message, array $context = [])
+ * @method emergency(string $message, array $context = [])
  * @package PhpMonsters\XLog
  * @author  Aboozar Ghaffari <aboozar.ghf@gmail.com>
  */
