@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Facade;
  * @method critical(string $message, array $context = [])
  * @method alert(string $message, array $context = [])
  * @method emergency(string $message, array $context = [])
+ * @method exception(Exception $e, bool $trace = false, string $name = 'error')
  * @package PhpMonsters\XLog
  * @author  Aboozar Ghaffari <aboozar.ghf@gmail.com>
  */
