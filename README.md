@@ -8,7 +8,7 @@ XLog adds `User ID`, `User IP`, `Track ID` to each log
 composer require php-monsters/laravel-xlog
 ```
 
-Add this to your app service providers :
+Add this to your app service providers (only for Laravael < 5.5):
 ```php
     PhpMonsters\Log\XLogServiceProvider::class,
 ```
