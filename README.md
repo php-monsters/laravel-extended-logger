@@ -68,7 +68,8 @@ XLog::info('verify transaction request', $request->all());
 ## Log exception
 
 ```php
-//The first parameter is the thrown exception. second parameter is the level of the log.
-XLog::exception($exception, 'error');
-XLog::exception($e, 'emergency');
+// The first parameter is the thrown exception. The second parameter specifies whether to log the trace or not. the third parameter is the level of the log. default value is `error`.
+XLog::exception($exception, true);
+XLog::exception($exception, true, 'error');
+XLog::exception($e, false, 'emergency');
 ```
