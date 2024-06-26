@@ -1,6 +1,6 @@
 # laravel-xlog
 Extended Laravel Log Component
-XLog adds `User ID`, `User IP`, `Track ID` to each log
+XLog adds `User ID`, `User IP`, and `unique Track ID` to each log
 
 ## Installation
 
@@ -28,33 +28,35 @@ XLOG_TRACK_ID_KEY= (default xTrackId)
 ```php
 use PhpMonsters\Log\XLog; // or register XLog Facade
 
-XLog::debug('test message');
-XLog::info('test message');
-XLog::notice('test message');
-XLog::warning('test message');
-XLog::error('test message');
-XLog::critical('test message');
-XLog::alert('test message');
-XLog::emergency('test message');
+XLog::debug('my log message');
+XLog::info('my log message');
+XLog::notice('my log message');
+XLog::warning('my log message');
+XLog::error('my log message');
+XLog::critical('my log message');
+XLog::alert('my log message');
+XLog::emergency('my log message');
 ```
 
 ## Pass parameters
 ```php
 
-// passing string
+// passing string as the second parameter
 $string = 'test'
-XLog::info('test message', [$string]);
+XLog::info('log message', [$string]);
 
 // passing array
-$array = [1,2,'test',4.2];
-XLog::info('test message', $array);
-
+$array = ['a' => 1, 'b' => 2, 'c' => 'value3', 'd' => 4.2];
+XLog::info('log message', $array);
+// log input data in the controller's action
+XLog::info('verify transaction request', $request->all());
 ```
 
 
 ## Log exception
 
 ```php
-XLog::exception($e, 'error');
+//The first parameter is the thrown exception. second parameter is the level of the log.
+XLog::exception($exception, 'error');
 XLog::exception($e, 'emergency');
 ```
