@@ -1,7 +1,19 @@
 # laravel-xlog
 Extended Laravel Log Component
-XLog adds `User ID`, `User IP`, and `unique Track ID` to each log
+XLog adds `User ID`, `User IP`, and `unique Track ID` to each log in a PHP lifecycle.
+So you can fetch all logs that are submitted through a Laravel request lifecycle (from beginning to end).
 
+You can fetch all logs using the tail command. For example if your unique track id was `523586093e` then you can use it like below:
+
+```
+cat laravel.log | grep 523586093e 
+```
+output:
+
+```
+[2024-06-26 00:36:12] production.DEBUG: AsanpardakhtController::token_request {"servicetypeid":1,"merchantconfigurationid":38718596,"localinvoiceid":17193495725213,"amountinrials":6980000,"localdate":"20240626 003612","callbackurl":"https://shop.test/payment/gateway-transactions/pqj5nm/callback","paymentid":0,"additionaldata":null,"settlementportions":[{"iban":"IR600780100710844707074710","amountInRials":6980000,"paymentId":0}],"sid":"","uip":"31.14.119.2","uid":"user","xTrackId":"523586093e"}
+[2024-06-26 00:36:13] production.INFO: AsanpardakhtController::token_response hd764QZna1fl1ALEwjoA: 200 {"sid":"","uip":"31.14.119.2","uid":"user","xTrackId":"523586093e"}
+```
 ## Installation
 
 ```bash
