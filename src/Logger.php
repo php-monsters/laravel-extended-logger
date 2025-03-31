@@ -36,7 +36,7 @@ class Logger
             'code' => $e->getCode(),
             'file' => basename($e->getFile()),
             'line' => $e->getLine(),
-            self::getTrackIdKey() => self::getTrackId(),
+            'x_track_id' => REQUEST_TRACKING_ID,
         ];
 
         if ($trace) {
@@ -46,29 +46,6 @@ class Logger
         return self::__callStatic($name, $arguments);
     }
 
-    /**
-     * @return string
-     */
-    public static function getTrackIdKey(): string
-    {
-        return env('XLOG_TRACK_ID_KEY', 'xTrackId');
-    }
-
-    /**
-     * @return string
-     */
-    protected static function getTrackId(): string
-    {
-        $trackIdKey = self::getTrackIdKey();
-
-        try {
-            $trackId = resolve($trackIdKey);
-        } catch (Exception $e) {
-            $trackId = '-';
-        }
-
-        return $trackId;
-    }
 
     /**
      * @param $name
@@ -95,31 +72,20 @@ class Logger
             $arguments[1] = [$arguments[1]];
         }
 
-        $arguments[1]['sid'] = self::getSessionId();
-
         $arguments[1]['uip'] = @clientIp();
 
         // add user id to all logs
         $arguments[1]['uid'] = self::getUserTag(); // user id as a tag
 
-        // get request track ID from service container
-        $trackIdKey = self::getTrackIdKey();
-        if (!isset($arguments[1][$trackIdKey])) {
-            $arguments[1][$trackIdKey] = self::getTrackId($trackIdKey);
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            $arguments[1]['sid'] =  session_id();
         }
+
+        // get request track ID from service container
+        $arguments[1]['x_track_id'] = REQUEST_TRACKING_ID;
+
 
         return call_user_func_array(['Illuminate\Support\Facades\Log', $name], $arguments);
-    }
-
-    /**
-     * @return string
-     */
-    private static function getSessionId(): string
-    {
-        if (session_status() === PHP_SESSION_ACTIVE) {
-            return session_id();
-        }
-        return '';
     }
 
     /**

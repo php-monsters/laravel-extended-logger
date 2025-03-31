@@ -27,9 +27,6 @@
     },
     "extra": {
         "laravel": {
-            "providers": [
-                "PhpMonsters\\Log\\XLogServiceProvider"
-            ],
             "aliases": {
                 "XLog": "PhpMonsters\\Log\\Facades\\XLog"
             }
